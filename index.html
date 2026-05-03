@@ -1,15 +1,28 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Sal’s Strawberry Saloon</title>
-  <link rel="stylesheet" href="style.css" />
-  <script type="module" src="./main.mjs"></script>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>Sals new york style Strawberrys</title>
+  <link rel="icon" type="image/x-icon" href="assets/images/dtec_favicon.png">
+
+  <link href="style.css" rel="stylesheet" type="text/css" />
+
+  <!-- firebase start ****************************************-->
+  <!-- Firebase App (core Firebase SDK) is always required & must be listed 1st -->
+  <script src="https://www.gstatic.com/firebasejs/8.1.2/firebase-app.js"></script>
+  <!-- Add Firebase products that you want to use -->
+  <script src="https://www.gstatic.com/firebasejs/8.1.2/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.1.2/firebase-database.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.1.2/firebase-analytics.js"></script>
+  <!-- firebase end ******************************************-->
+  <script src="fb_setup.js"></script>
+  <script src="fb_io.js"></script>
+
 </head>
 <body>
   <div class="container">
-    <h1>Sal’s Strawberry Saloon</h1>
+    <h1>Sal’s new york style Strawberry Saloon</h1>
     <h2>(and other fruit products)</h2>
 
     <button onclick="fb_authenticate()">Login with Google</button>
@@ -24,6 +37,9 @@
       <label for="fruitQuantity">How many servings per week?</label>
       <input type="number" id="fruitQuantity" name="fruitQuantity" required />
 
+      <label for="email">Your email address></label>
+      <input type="text" id="email" name="email" required />
+      
       <!-- add more fields here -->
     </form>
 
@@ -32,4 +48,5 @@
     <p id="statusMessage"></p>
   </div>
 </body>
+<script src="script.js"></script>
 </html>
