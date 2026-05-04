@@ -1,5 +1,7 @@
 let loggedin;
 let uid;
+let displayName;
+let email;
 let profileLink;
 console.log("Running Sal's Strawberries")
 
@@ -24,7 +26,9 @@ function fb_authenticate(){
       // User is signed in, see docs for a list of available properties
       // https://firebase.google.com/docs/reference/js/v8/firebase.User
        uid = user.uid;
+       displayName = user.displayName;
        profileLink = user.photoURL;
+       email = user.email;
       // ...
     } else {
       console.log('not logged in')
@@ -38,20 +42,20 @@ function fb_authenticate(){
 function fb_write(){
     if(loggedin){
         let inputTable = {
-            users:{
-                uid: uid,
-                    input:{
+                input:{
+                        uid: uid,
                         name: document.getElementById('name').value,
                         favoriteFruit: document.getElementById('favoriteFruit').value,
                         fruitQuantity: document.getElementById('fruitQuantity').value,
                         email: document.getElementById('email').value
                 }
             }
-        }
-        firebase.database().ref('/salsStrawberry').set(
+        firebase.database().ref('/salsStrawberry/users/'+ displayName).set(
             {
                 inputTable
             }
         );
+    } else{
+        alert("PLease log in with your google account to continue")
     }
 }
