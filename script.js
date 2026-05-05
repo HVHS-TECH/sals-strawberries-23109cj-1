@@ -3,6 +3,7 @@ let uid;
 let displayName;
 let email;
 let profileLink;
+let phoneNumber;
 console.log("Running Sal's Strawberries")
 
 function writeForm(){
@@ -29,6 +30,7 @@ function fb_authenticate(){
        displayName = user.displayName;
        profileLink = user.photoURL;
        email = user.email;
+       phoneNumber = user.phoneNumber;
       // ...
     } else {
       console.log('not logged in')
@@ -42,13 +44,13 @@ function fb_authenticate(){
 function fb_write(){
     if(loggedin){
         let inputTable = {
-                input:{
-                        uid: uid,
-                        name: document.getElementById('name').value,
-                        favoriteFruit: document.getElementById('favoriteFruit').value,
-                        fruitQuantity: document.getElementById('fruitQuantity').value,
-                        email: document.getElementById('email').value
-                }
+                uid: uid,
+                name: displayName,
+                favoriteFruit: document.getElementById('favoriteFruit').value,
+                fruitQuantity: document.getElementById('fruitQuantity').value,
+                email: email,
+                phoneNumber: phoneNumber,
+                profilePicture:profileLink
             }
         firebase.database().ref('/salsStrawberry/users/'+ displayName).set(
             {
