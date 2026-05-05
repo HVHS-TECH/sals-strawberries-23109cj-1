@@ -61,3 +61,9 @@ function fb_write(){
         alert("PLease log in with your google account to continue")
     }
 }
+
+function fb_email(){
+    document.getElementById('emailGen').innerHTML = `
+    
+    `
+}
