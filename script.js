@@ -52,7 +52,7 @@ function fb_write(){
                 phoneNumber: phoneNumber,
                 profilePicture:profileLink
             }
-        firebase.database().ref('/salsStrawberry/users/'+ displayName).set(
+        firebase.database().ref('/salsStrawberry/users/'+ uid).set(
             {
                 inputTable
             }
