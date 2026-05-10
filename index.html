@@ -32,15 +32,28 @@
       <label for="favoriteFruit">Favorite Fruit:</label>
       <input type="text" id="favoriteFruit" name="favoriteFruit" required />
 
+      <label for="2ndfavoriteFruit">2nd Favorite Fruit:</label>
+      <input type="text" id="2ndfavoriteFruit" name="2ndfavoriteFruit" required />
+
+      <label for="3rdfavoriteFruit">3rd Favorite Fruit:</label>
+      <input type="text" id="3rdfavoriteFruit" name="3rdfavoriteFruit" required />
+
       <label for="fruitQuantity">How many servings per week?</label>
       <input type="number" id="fruitQuantity" name="fruitQuantity" required />
       
       <!-- add more fields here -->
+      <label for="review">Leave a Review:</label>
+      <input type="text" id="review" name="review"/>
+
     </form>
 
     <button onclick="fb_write()">Submit</button>
     <button onclick="fb_email()">Generate email</button>
+    <button onclick="fb_readReviews()">Read reviews</button>
+    <button onclick="fb_readPopularFruit()">See what frutis are popular</button>
     <div id="emailGen"></div>
+    <div id="reviewGen"></div>
+    <div id="popularFruitGen"></div>
     <p id="statusMessage"></p>
   </div>
 </body>

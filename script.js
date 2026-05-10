@@ -43,15 +43,25 @@ function fb_authenticate(){
 
 function fb_write(){
     if(loggedin){
+        console.log('submit')
         let inputTable = {
                 uid: uid,
                 name: displayName,
                 favoriteFruit: document.getElementById('favoriteFruit').value,
+                "2ndfavoriteFruit": document.getElementById('2ndfavoriteFruit').value,
+                "3rdfavoriteFruit": document.getElementById('3rdfavoriteFruit').value,
                 fruitQuantity: document.getElementById('fruitQuantity').value,
                 email: email,
                 phoneNumber: phoneNumber,
                 profilePicture:profileLink
             }
+        let review = {
+
+            review:document.getElementById('review').value
+        }
+        firebase.database().ref('/salsStrawberry/review/' + uid).set(
+            review
+        )
         firebase.database().ref('/salsStrawberry/users/'+ uid).set(
             {
                 inputTable
@@ -63,7 +73,30 @@ function fb_write(){
 }
 
 function fb_email(){
-    document.getElementById('emailGen').innerHTML = `
+    document.getElementById('emailGen').innerHTML = `<h1>Sal's New York Style Strawberries</h1>  <img src="`+profileLink+`"<br>
+    <p>Dear` + displayName + ` @` + email + `<br>
+    We have an offer on your 3 favorite fruits, `+ document.getElementById('favoriteFruit').value + `, ` +document.getElementById('2ndfavoriteFruit').value +`, and ` +document.getElementById('3rdfavoriteFruit').value + `<br>
+    they are now buy `+ document.getElementById('fruitQuantity').value +` get 1 double price!!</p>`
+}
+
+function fb_readReviews(){
+    firebase.database().ref('/salsStrawberry/review').once('value',fb_displayReviews)
+}
+
+function fb_displayReviews(snapshot){
+    let reviews = snapshot.val()
+    let reviewKeys = Object.keys(reviews)
+    for(i=0;i<reviewKeys.length;i++){
+        let key = reviewKeys[i];
+        console.log(reviews[key])
+        document.getElementById('reviewGen').innerHTML =document.getElementById('reviewGen').innerHTML + `<br><p>` + reviews[key].review + `</p>` 
+    }
+}
+
+function fb_readPopularFruit(){
+    firebase.database().ref('/salsStrawberry/users').once('value', fb_displayPopularFruits)
+}
+
+function fb_displayPopularFruits(){
     
-    `
 }
