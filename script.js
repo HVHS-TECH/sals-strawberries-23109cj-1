@@ -97,6 +97,30 @@ function fb_readPopularFruit(){
     firebase.database().ref('/salsStrawberry/users').once('value', fb_displayPopularFruits)
 }
 
-function fb_displayPopularFruits(){
-    
+function fb_displayPopularFruits(snapshot){
+    let popularFruits = []
+    let users = snapshot.val();
+    let userKeys = Object.keys(users);
+    console.log(userKeys.length);
+    for(i=0;i<userKeys.length; i++){
+        let key = userKeys[i];
+        let currentFruit = users[key].inputTable.favoriteFruit;
+
+        console.log(popularFruits.length)
+        if(popularFruits.length ==0){
+            popularFruits.push({fruit : currentFruit, frequency:0});
+        }
+
+        for(i=0;i<popularFruits.length; i++){
+            console.log(popularFruits)
+            if(popularFruits[i].fruit == currentFruit){
+                popularFruits[i].frequency +=1;
+                break;
+            }else if(i==popularFruits.length -1){
+                popularFruits.push({fruit: currentFruit, frequency:0})
+            }
+        }
+    }
+
+console.log(popularFruits)
 }
