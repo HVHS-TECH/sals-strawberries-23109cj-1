@@ -48,8 +48,8 @@ function fb_write() {
             uid: uid,
             name: displayName,
             favoriteFruit: document.getElementById('favoriteFruit').value,
-            "2ndfavoriteFruit": document.getElementById('2ndfavoriteFruit').value,
-            "3rdfavoriteFruit": document.getElementById('3rdfavoriteFruit').value,
+            secondFavoriteFruit: document.getElementById('2ndfavoriteFruit').value,
+            thirdFavoriteFruit: document.getElementById('3rdfavoriteFruit').value,
             fruitQuantity: document.getElementById('fruitQuantity').value,
             email: email,
             phoneNumber: phoneNumber,
@@ -72,14 +72,33 @@ function fb_write() {
     }
 }
 
-function fb_email() {
+function fb_readEmail(){
+    if(loggedin){        
+        firebase.database().ref('/salsStrawberry/users/'+uid ).once('value', fb_email)
+    }else{
+        alert("PLease log in with your google account to continue")
+    }
+}
+
+function fb_email(snapshot) {
+    let userData = snapshot.val();
+    uid = userData.inputTable.uid;
+    displayName = userData.inputTable.name;
+    let favoriteFruit = userData.inputTable.favoriteFruit;
+    let secondFavoriteFruit = userData.inputTable.secondFavoriteFruit;
+    let thirdFavoriteFruit = userData.inputTable.thirdFavoriteFruit;
+    let fruitQuantity = userData.inputTable.fruitQuantity;
+    email = userData.inputTable.email;
+    profileLink = userData.inputTable.profilePicture
+
     document.getElementById('emailGen').innerHTML = `<h1>Sal's New York Style Strawberries</h1>  <img src="` + profileLink + `"<br>
     <p>Dear` + displayName + ` @` + email + `<br>
-    We have an offer on your 3 favorite fruits, `+ document.getElementById('favoriteFruit').value + `, ` + document.getElementById('2ndfavoriteFruit').value + `, and ` + document.getElementById('3rdfavoriteFruit').value + `<br>
-    they are now buy `+ document.getElementById('fruitQuantity').value + ` get 1 double price!!</p>`
+    We have an offer on your 3 favorite fruits, `+ favoriteFruit + `, ` + secondFavoriteFruit + `, and ` + thirdFavoriteFruit + `<br>
+    they are now buy `+ fruitQuantity + ` get 1 double price!!</p>`;
 }
 
 function fb_readReviews() {
+    document.getElementById('reviewGen').innerHTML = null;
     firebase.database().ref('/salsStrawberry/review').once('value', fb_displayReviews)
 }
 
@@ -94,6 +113,7 @@ function fb_displayReviews(snapshot) {
 }
 
 function fb_readPopularFruit() {
+    document.getElementById('popularFruitGen').innerHTML = null
     firebase.database().ref('/salsStrawberry/users').once('value', fb_displayPopularFruits)
 }
 
