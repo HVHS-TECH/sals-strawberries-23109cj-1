@@ -98,7 +98,7 @@ function fb_email(snapshot) {
 }
 
 function fb_readReviews() {
-    document.getElementById('reviewGen').innerHTML = null;
+    document.getElementById('reviewGen').innerHTML = '';
     firebase.database().ref('/salsStrawberry/review').once('value', fb_displayReviews)
 }
 
@@ -113,7 +113,7 @@ function fb_displayReviews(snapshot) {
 }
 
 function fb_readPopularFruit() {
-    document.getElementById('popularFruitGen').innerHTML = null
+    document.getElementById('popularFruitGen').innerHTML = '';
     firebase.database().ref('/salsStrawberry/users').once('value', fb_displayPopularFruits)
 }
 
