@@ -42,15 +42,19 @@ function fb_authenticate() {
 }
 
 function fb_write() {
-    if (loggedin) {
+    let favoriteFruit = document.getElementById('favoriteFruit').value.trim();
+    let secondFavoriteFruit = document.getElementById('2ndfavoriteFruit').value.trim();
+    let thirdFavoriteFruit = document.getElementById('3rdfavoriteFruit').value.trim();
+    let fruitQuantity = document.getElementById('fruitQuantity').value.trim();
+    if (loggedin && (favoriteFruit != "") && (secondFavoriteFruit != "") && (thirdFavoriteFruit != "") && (fruitQuantity != "")) {
         console.log('submit')
         let inputTable = {
             uid: uid,
             name: displayName,
-            favoriteFruit: document.getElementById('favoriteFruit').value,
-            secondFavoriteFruit: document.getElementById('2ndfavoriteFruit').value,
-            thirdFavoriteFruit: document.getElementById('3rdfavoriteFruit').value,
-            fruitQuantity: document.getElementById('fruitQuantity').value,
+            favoriteFruit: favoriteFruit,
+            secondFavoriteFruit: secondFavoriteFruit,
+            thirdFavoriteFruit: thirdFavoriteFruit,
+            fruitQuantity: fruitQuantity,
             email: email,
             phoneNumber: phoneNumber,
             profilePicture: profileLink
@@ -67,8 +71,10 @@ function fb_write() {
                 inputTable
             }
         );
-    } else {
+    } else if(!loggedin){
         alert("PLease log in with your google account to continue")
+    }else{
+        alert("Please ensure you have filled out all fields")
     }
 }
 
@@ -91,14 +97,14 @@ function fb_email(snapshot) {
     email = userData.inputTable.email;
     profileLink = userData.inputTable.profilePicture
 
-    document.getElementById('emailGen').innerHTML = `<h1>Sal's New York Style Strawberries</h1>  <img src="` + profileLink + `"<br>
+    document.getElementById('output').innerHTML = `<h1>Sal's New York Style Strawberries</h1>  <img src="` + profileLink + `"<br>
     <p>Dear` + displayName + ` @` + email + `<br>
     We have an offer on your 3 favorite fruits, `+ favoriteFruit + `, ` + secondFavoriteFruit + `, and ` + thirdFavoriteFruit + `<br>
     they are now buy `+ fruitQuantity + ` get 1 double price!!</p>`;
 }
 
 function fb_readReviews() {
-    document.getElementById('reviewGen').innerHTML = '';
+    document.getElementById('output').innerHTML = '';
     firebase.database().ref('/salsStrawberry/review').once('value', fb_displayReviews)
 }
 
@@ -108,12 +114,12 @@ function fb_displayReviews(snapshot) {
     for (i = 0; i < reviewKeys.length; i++) {
         let key = reviewKeys[i];
         console.log(reviews[key])
-        document.getElementById('reviewGen').innerHTML = document.getElementById('reviewGen').innerHTML + `<br><p>` + reviews[key].review + `</p>`
+        document.getElementById('output').innerHTML = document.getElementById('output').innerHTML + `<br><p>` + reviews[key].review + `</p>`
     }
 }
 
 function fb_readPopularFruit() {
-    document.getElementById('popularFruitGen').innerHTML = '';
+    document.getElementById('output').innerHTML = '';
     firebase.database().ref('/salsStrawberry/users').once('value', fb_displayPopularFruits)
 }
 
@@ -145,6 +151,6 @@ function fb_displayPopularFruits(snapshot) {
     popularFruits.sort((a, b) => b.value - a.value)
     console.log(popularFruits)
     for (i = 0; i < popularFruits.length; i++) {
-        document.getElementById('popularFruitGen').innerHTML = document.getElementById('popularFruitGen').innerHTML + `<p>` + popularFruits[i].fruit + `: ` + popularFruits[i].frequency + `</p><br>`;
+        document.getElementById('output').innerHTML = document.getElementById('output').innerHTML + `<p>` + popularFruits[i].fruit + `: ` + popularFruits[i].frequency + `</p><br>`;
     }
 }
