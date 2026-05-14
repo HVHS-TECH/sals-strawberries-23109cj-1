@@ -71,44 +71,38 @@ function fb_write() {
                 inputTable
             }
         );
-    } else if(!loggedin){
+    } else if (!loggedin) {
         alert("PLease log in with your google account to continue")
-    }else{
+    } else {
         alert("Please ensure you have filled out all fields")
     }
 }
 
-function fb_readEmail(){
-    if(loggedin){        
-        firebase.database().ref('/salsStrawberry/users/'+uid ).once('value', fb_email)
-    }else{
+async function fb_readEmail() {
+    if (loggedin) {
+        let snapshot = await firebase.database().ref('/salsStrawberry/users/' + uid).once('value')
+        let userData = snapshot.val();
+        uid = userData.inputTable.uid;
+        displayName = userData.inputTable.name;
+        let favoriteFruit = userData.inputTable.favoriteFruit;
+        let secondFavoriteFruit = userData.inputTable.secondFavoriteFruit;
+        let thirdFavoriteFruit = userData.inputTable.thirdFavoriteFruit;
+        let fruitQuantity = userData.inputTable.fruitQuantity;
+        email = userData.inputTable.email;
+        profileLink = userData.inputTable.profilePicture
+
+        document.getElementById('output').innerHTML = `<h1>Sal's New York Style Strawberries</h1>  <img src="` + profileLink + `"<br>
+        <p>Dear` + displayName + ` @` + email + `<br>
+        We have an offer on your 3 favorite fruits, `+ favoriteFruit + `, ` + secondFavoriteFruit + `, and ` + thirdFavoriteFruit + `<br>
+        they are now buy `+ fruitQuantity + ` get 1 double price!!</p>`;
+    } else {
         alert("PLease log in with your google account to continue")
     }
 }
 
-function fb_email(snapshot) {
-    let userData = snapshot.val();
-    uid = userData.inputTable.uid;
-    displayName = userData.inputTable.name;
-    let favoriteFruit = userData.inputTable.favoriteFruit;
-    let secondFavoriteFruit = userData.inputTable.secondFavoriteFruit;
-    let thirdFavoriteFruit = userData.inputTable.thirdFavoriteFruit;
-    let fruitQuantity = userData.inputTable.fruitQuantity;
-    email = userData.inputTable.email;
-    profileLink = userData.inputTable.profilePicture
-
-    document.getElementById('output').innerHTML = `<h1>Sal's New York Style Strawberries</h1>  <img src="` + profileLink + `"<br>
-    <p>Dear` + displayName + ` @` + email + `<br>
-    We have an offer on your 3 favorite fruits, `+ favoriteFruit + `, ` + secondFavoriteFruit + `, and ` + thirdFavoriteFruit + `<br>
-    they are now buy `+ fruitQuantity + ` get 1 double price!!</p>`;
-}
-
-function fb_readReviews() {
+async function fb_readReviews() {
     document.getElementById('output').innerHTML = '';
-    firebase.database().ref('/salsStrawberry/review').once('value', fb_displayReviews)
-}
-
-function fb_displayReviews(snapshot) {
+    let snapshot = await firebase.database().ref('/salsStrawberry/review').once('value')
     let reviews = snapshot.val()
     let reviewKeys = Object.keys(reviews)
     for (i = 0; i < reviewKeys.length; i++) {
@@ -118,12 +112,9 @@ function fb_displayReviews(snapshot) {
     }
 }
 
-function fb_readPopularFruit() {
+async function fb_readPopularFruit() {
     document.getElementById('output').innerHTML = '';
-    firebase.database().ref('/salsStrawberry/users').once('value', fb_displayPopularFruits)
-}
-
-function fb_displayPopularFruits(snapshot) {
+    let snapshot = await firebase.database().ref('/salsStrawberry/users').once('value')
     let popularFruits = []
     let users = snapshot.val();
     let userKeys = Object.keys(users);
@@ -143,7 +134,7 @@ function fb_displayPopularFruits(snapshot) {
             if (popularFruits[h].fruit == currentFruit) {
                 popularFruits[h].frequency += 1;
                 break;
-            } else if (h == popularFruits.length -1) {
+            } else if (h == popularFruits.length - 1) {
                 popularFruits.push({ fruit: currentFruit, frequency: 0 })
             }
         }
