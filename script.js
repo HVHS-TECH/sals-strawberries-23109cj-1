@@ -4,6 +4,8 @@ let displayName;
 let email;
 let profileLink;
 let phoneNumber;
+let user;
+let canLogIn = true;
 console.log("Running Sal's Strawberries")
 
 function writeForm() {
@@ -11,35 +13,57 @@ function writeForm() {
     const favoriteFruit = document.getElementById("favoriteFruit").value;
 }
 
-function fb_authenticate() {
-    firebase.auth().onAuthStateChanged((user) => {
-        var provider = new firebase.auth.GoogleAuthProvider();
-        firebase.auth().signInWithPopup(provider).then(function (result) {
-            // This gives you a Google Access Token.
-            var token = result.credential.accessToken;
-            // The signed-in user info.
-            var user = result.user;
-        });
-        if (user) {
-            loggedin = true;
-            console.log('loggedin')
-            console.log(user)
-            // User is signed in, see docs for a list of available properties
-            // https://firebase.google.com/docs/reference/js/v8/firebase.User
-            uid = user.uid;
-            displayName = user.displayName;
-            profileLink = user.photoURL;
-            email = user.email;
-            phoneNumber = user.phoneNumber;
-            // ...
-        } else {
-            console.log('not logged in')
-            loggedin = false
-            // User is signed out
-            // ...
-        }
-    });
+function fb_logout(){
+    firebase.auth().signOut();
+    loggedin = false;
+    document.getElementById("login").innerHTML = `<button onclick="fb_login()">Login</button>`;
+    document.getElementById("logout").innerHTML = ``;
 }
+
+function fb_login(){
+    document.getElementById('login').innerHTML=`<button onclick="fb_authenticate()">Sign in with google</button>`;
+    canLogIn =true;
+}
+
+function fb_authenticate() {
+        if(canLogIn){
+            var authentication = firebase.auth().onAuthStateChanged((user) => {
+
+                var provider = new firebase.auth.GoogleAuthProvider();
+                firebase.auth().signInWithPopup(provider).then(function (result) {
+                    // This gives you a Google Access Token.
+                    var token = result.credential.accessToken;
+                    // The signed-in user info.
+                    user = result.user;
+                });
+                if (user) {
+                    loggedin = true;
+                    canLogIn =false;
+
+                    console.log('loggedin')
+                    console.log(user)
+                    // User is signed in, see docs for a list of available properties
+                    // https://firebase.google.com/docs/reference/js/v8/firebase.User
+                    uid = user.uid;
+                    displayName = user.displayName;
+                    profileLink = user.photoURL;
+                    email = user.email;
+                    phoneNumber = user.phoneNumber;
+                    
+                    document.getElementById('login').innerHTML = ``;
+                    document.getElementById('logout').innerHTML =`<button onclick="fb_logout()">Logout</button>`;
+                        authentication();
+
+                } else {
+                    console.log('not logged in')
+                    loggedin = false;
+                    canLogIn = true;
+                    // User is signed out
+                    // ...
+                }
+        });
+}}
+
 
 function fb_write() {
     let favoriteFruit = document.getElementById('favoriteFruit').value.trim();
