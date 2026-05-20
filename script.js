@@ -116,7 +116,7 @@ async function fb_readEmail() {
         email = userData.inputTable.email;
         profileLink = userData.inputTable.profilePicture
 
-        document.getElementById('output').innerHTML = `<h1>Sal's New York Style Strawberries</h1>  <img src="` + profileLink + `"<br>
+        document.getElementById('output').innerHTML = `<h1>Sal's New York Style Strawberries</h1>  <img src="` + profileLink + `" style="border-radius:60px"><br>
         <p>Dear` + displayName + ` @` + email + `<br>
         We have an offer on your 3 favorite fruits, `+ favoriteFruit + `, ` + secondFavoriteFruit + `, and ` + thirdFavoriteFruit + `<br>
         they are now buy `+ fruitQuantity + ` get 1 double price!!</p>`;
