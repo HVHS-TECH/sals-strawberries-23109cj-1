@@ -52,7 +52,8 @@ function fb_authenticate() {
                     
                     document.getElementById('login').innerHTML = ``;
                     document.getElementById('logout').innerHTML =`<button onclick="fb_logout()">Logout</button>`;
-                        authentication();
+                    authentication();
+                    fb_checkBan(user.uid);
 
                 } else {
                     console.log('not logged in')
@@ -167,5 +168,14 @@ async function fb_readPopularFruit() {
     console.log(popularFruits)
     for (i = 0; i < popularFruits.length; i++) {
         document.getElementById('output').innerHTML = document.getElementById('output').innerHTML + `<p>` + popularFruits[i].fruit + `: ` + popularFruits[i].frequency + `</p><br>`;
+    }
+}
+
+
+function fb_checkBan(userUID){
+    let snapshot = await firebase.database().ref('salsStrawberry/banList/' + userUID).once('value');
+    let banned = snapshot.val();
+    if(banned != null){
+        window.location.href = 'https://en.wikipedia.org/wiki/Chinese_Communist_Party';
     }
 }
