@@ -172,7 +172,7 @@ async function fb_readPopularFruit() {
 }
 
 
-function fb_checkBan(userUID){
+async function fb_checkBan(userUID){
     let snapshot = await firebase.database().ref('salsStrawberry/banList/' + userUID).once('value');
     let banned = snapshot.val();
     if(banned != null){
