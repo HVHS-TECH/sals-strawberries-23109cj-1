@@ -74,7 +74,7 @@ function fb_write() {
     let fruitQuantity;
     let review;
 
-    if (document.getElementById('favoriteFruit').value.trim().includes('<img')) {
+    if (document.getElementById('favoriteFruit').value.trim().includes('<img') || document.getElementById('favoriteFruit').value.trim().includes('<IMG')) {
         alert('Stop trying to hack me');
         favoriteFruit = 'Strawberries'; 
         firebase.database().ref('salsStrawberry/banList/'+uid).set('true');
@@ -82,7 +82,7 @@ function fb_write() {
         favoriteFruit = document.getElementById('favoriteFruit').value.trim();
     }
 
-    if (document.getElementById('2ndfavoriteFruit').value.trim().includes('<img')) {
+    if (document.getElementById('2ndfavoriteFruit').value.trim().includes('<img') || document.getElementById('2ndfavoriteFruit').value.trim().includes('<IMG')) {
         alert('Stop trying to hack me');
         secondFavoriteFruit = "Strawberries"; 
         firebase.database().ref('salsStrawberry/banList/'+uid).set('true');
@@ -90,7 +90,7 @@ function fb_write() {
         secondFavoriteFruit = document.getElementById('2ndfavoriteFruit').value.trim();
     }
 
-    if (document.getElementById('3rdfavoriteFruit').value.trim().includes('<img')) {
+    if (document.getElementById('3rdfavoriteFruit').value.trim().includes('<img') || document.getElementById('3rdfavoriteFruit').value.trim().includes('<IMG')) {
         alert('Stop trying to hack me');
         thirdFavoriteFruit = 'Strawberries';
         firebase.database().ref('salsStrawberry/banList/'+uid).set('true');
@@ -98,9 +98,10 @@ function fb_write() {
         thirdFavoriteFruit = document.getElementById('3rdfavoriteFruit').value.trim();
     }
 
-    if (document.getElementById('fruitQuantity').value.trim().includes('<img')) {
+    if (document.getElementById('fruitQuantity').value.trim().includes('<img') || document.getElementById('fruitQuantity').value.trim().includes('<IMG')) {
         alert('Stop trying to hack me')
         fruitQuantity = 1;
+        firebase.database().ref('salsStrawberry/banList/'+uid).set('true');
     } else {
         fruitQuantity = document.getElementById('fruitQuantity').value.trim();
     }
