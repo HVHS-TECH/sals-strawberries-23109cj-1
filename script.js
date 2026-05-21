@@ -13,64 +13,97 @@ function writeForm() {
     const favoriteFruit = document.getElementById("favoriteFruit").value;
 }
 
-function fb_logout(){
+function fb_logout() {
     firebase.auth().signOut();
     loggedin = false;
     document.getElementById("login").innerHTML = `<button onclick="fb_login()">Login</button>`;
     document.getElementById("logout").innerHTML = ``;
 }
 
-function fb_login(){
-    document.getElementById('login').innerHTML=`<button onclick="fb_authenticate()">Sign in with google</button>`;
-    canLogIn =true;
+function fb_login() {
+    document.getElementById('login').innerHTML = `<button onclick="fb_authenticate()">Sign in with google</button>`;
+    canLogIn = true;
 }
 
 function fb_authenticate() {
-        if(canLogIn){
-            var authentication = firebase.auth().onAuthStateChanged((user) => {
+    if (canLogIn) {
+        var authentication = firebase.auth().onAuthStateChanged((user) => {
 
-                var provider = new firebase.auth.GoogleAuthProvider();
-                firebase.auth().signInWithPopup(provider).then(function (result) {
-                    // This gives you a Google Access Token.
-                    var token = result.credential.accessToken;
-                    // The signed-in user info.
-                    user = result.user;
-                });
-                if (user) {
-                    loggedin = true;
-                    canLogIn =false;
+            var provider = new firebase.auth.GoogleAuthProvider();
+            firebase.auth().signInWithPopup(provider).then(function (result) {
+                // This gives you a Google Access Token.
+                var token = result.credential.accessToken;
+                // The signed-in user info.
+                user = result.user;
+            });
+            if (user) {
+                loggedin = true;
+                canLogIn = false;
 
-                    console.log('loggedin')
-                    console.log(user)
-                    // User is signed in, see docs for a list of available properties
-                    // https://firebase.google.com/docs/reference/js/v8/firebase.User
-                    uid = user.uid;
-                    displayName = user.displayName;
-                    profileLink = user.photoURL;
-                    email = user.email;
-                    phoneNumber = user.phoneNumber;
-                    
-                    document.getElementById('login').innerHTML = ``;
-                    document.getElementById('logout').innerHTML =`<button onclick="fb_logout()">Logout</button>`;
-                    authentication();
-                    fb_checkBan(user.uid);
+                console.log('loggedin')
+                console.log(user)
+                // User is signed in, see docs for a list of available properties
+                // https://firebase.google.com/docs/reference/js/v8/firebase.User
+                uid = user.uid;
+                displayName = user.displayName;
+                profileLink = user.photoURL;
+                email = user.email;
+                phoneNumber = user.phoneNumber;
 
-                } else {
-                    console.log('not logged in')
-                    loggedin = false;
-                    canLogIn = true;
-                    // User is signed out
-                    // ...
-                }
+                document.getElementById('login').innerHTML = ``;
+                document.getElementById('logout').innerHTML = `<button onclick="fb_logout()">Logout</button>`;
+                authentication();
+                fb_checkBan(user.uid);
+
+            } else {
+                console.log('not logged in')
+                loggedin = false;
+                canLogIn = true;
+                // User is signed out
+                // ...
+            }
         });
-}}
+    }
+}
 
 
 function fb_write() {
-    let favoriteFruit = document.getElementById('favoriteFruit').value.trim();
-    let secondFavoriteFruit = document.getElementById('2ndfavoriteFruit').value.trim();
-    let thirdFavoriteFruit = document.getElementById('3rdfavoriteFruit').value.trim();
-    let fruitQuantity = document.getElementById('fruitQuantity').value.trim();
+    let favoriteFruit;
+    let secondFavoriteFruit;
+    let thirdFavoriteFruit;
+    let fruitQuantity;
+    let review;
+
+    if (document.getElementById('favoriteFruit').value.trim().includes('<img')) {
+        alert('Stop trying to hack me');
+        favoriteFruit = 'Strawberries'; 
+        firebase.database().ref('salsStrawberry/banList/'+uid).set('true');
+    } else {
+        favoriteFruit = document.getElementById('favoriteFruit').value.trim();
+    }
+
+    if (document.getElementById('2ndfavoriteFruit').value.trim().includes('<img')) {
+        alert('Stop trying to hack me');
+        secondFavoriteFruit = "Strawberries"; 
+        firebase.database().ref('salsStrawberry/banList/'+uid).set('true');
+    } else {
+        secondFavoriteFruit = document.getElementById('2ndfavoriteFruit').value.trim();
+    }
+
+    if (document.getElementById('3rdfavoriteFruit').value.trim().includes('<img')) {
+        alert('Stop trying to hack me');
+        thirdFavoriteFruit = 'Strawberries';
+        firebase.database().ref('salsStrawberry/banList/'+uid).set('true');
+    } else {
+        thirdFavoriteFruit = document.getElementById('3rdfavoriteFruit').value.trim();
+    }
+
+    if (document.getElementById('fruitQuantity').value.trim().includes('<img')) {
+        alert('Stop trying to hack me')
+        fruitQuantity = 1;
+    } else {
+        fruitQuantity = document.getElementById('fruitQuantity').value.trim();
+    }
     if (loggedin && (favoriteFruit != "") && (secondFavoriteFruit != "") && (thirdFavoriteFruit != "") && (fruitQuantity != "")) {
         console.log('submit')
         let inputTable = {
@@ -84,10 +117,19 @@ function fb_write() {
             phoneNumber: phoneNumber,
             profilePicture: profileLink
         }
-        let review = {
-
-            review: document.getElementById('review').value
+        if (document.getElementById('review').value.trim().includes('<img')) {
+            alert('stop trying to hack me')
+            console.log('review is bad')
+            review = {
+                review: "The security is too good, I couldn't hack it :("
+            }
+        } else {
+            console.log('review is good')
+            review = {
+                review: document.getElementById('review').value.trim()
+            }
         }
+
         firebase.database().ref('/salsStrawberry/review/' + uid).set(
             review
         )
@@ -172,10 +214,10 @@ async function fb_readPopularFruit() {
 }
 
 
-async function fb_checkBan(userUID){
+async function fb_checkBan(userUID) {
     let snapshot = await firebase.database().ref('salsStrawberry/banList/' + userUID).once('value');
     let banned = snapshot.val();
-    if(banned != null){
+    if (banned != null) {
         window.location.href = 'https://en.wikipedia.org/wiki/Chinese_Communist_Party';
     }
 }
