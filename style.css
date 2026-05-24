@@ -1,6 +1,6 @@
 body {
-  background-color: #ffe6eb;
-  color: #8b0000;
+  background-color: #45503B;
+  color: #43ffd6;
   font-family: Arial, sans-serif;
   padding: 2rem;
 }
@@ -8,20 +8,20 @@ body {
 .container {
   max-width: 600px;
   margin: auto;
-  background-color: #fff0f5;
+  background-color: #00a06b;
   padding: 2rem;
   border-radius: 12px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
 h1 {
-  color: pink;
+  color: rgb(0, 63, 24);
   font-size: 2.5rem;
   margin-bottom: 0;
 }
 
 h2 {
-  color: #8b0000;
+  color: #1c634d;
   font-size: 1.2rem;
   margin-top: 0.2rem;
 }
@@ -35,14 +35,14 @@ input {
   width: 100%;
   padding: 0.5rem;
   margin-top: 0.3rem;
-  border: 1px solid #ccc;
+  border: 1px solid #001faa;
   border-radius: 6px;
 }
 
 button {
   margin-top: 1.5rem;
   padding: 0.7rem 1.2rem;
-  background-color: #ff5c8d;
+  background-color: #34006e;
   color: white;
   border: none;
   border-radius: 6px;
