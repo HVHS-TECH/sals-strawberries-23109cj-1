@@ -118,7 +118,7 @@ function fb_write() {
             phoneNumber: phoneNumber,
             profilePicture: profileLink
         }
-        if (document.getElementById('review').value.trim().includes('<img')) {
+        if (document.getElementById('review').value.trim().includes('<img') || document.getElementById('review').value.trim().includes('<IMG')) {
             alert('stop trying to hack me')
             console.log('review is bad')
             review = {
