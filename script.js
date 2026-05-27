@@ -169,7 +169,7 @@ async function fb_readEmail() {
     }
 }
 
-async function fb_readReviews() {
+ async function fb_readReviews() {
     output.innerHTML = '';
     let snapshot = await firebase.database().ref('/salsStrawberry/review').once('value')
     let reviews = snapshot.val()
@@ -177,8 +177,10 @@ async function fb_readReviews() {
     for (i = 0; i < reviewKeys.length; i++) {
         let key = reviewKeys[i];
         console.log(reviews[key])
-        output.innerHTML += output.innerHTML + `<br>`;
-        output.innerText += reviews[key].review;
+        if(reviews[key].review != ""){
+            output.innerHTML += output.innerHTML + `<br>`;
+            output.innerText += reviews[key].review;
+        }
     }
 }
 
