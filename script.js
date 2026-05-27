@@ -6,6 +6,7 @@ let profileLink;
 let phoneNumber;
 let user;
 let canLogIn = true;
+let output = document.getElementById('output');
 console.log("Running Sal's Strawberries")
 
 function writeForm() {
@@ -159,29 +160,30 @@ async function fb_readEmail() {
         email = userData.inputTable.email;
         profileLink = userData.inputTable.profilePicture
 
-        document.getElementById('output').innerHTML = `<h1>Sal's New York Style Strawberries</h1>  <img src="` + profileLink + `" style="border-radius:60px"><br>
-        <p>Dear` + displayName + ` @` + email + `<br>
-        We have an offer on your 3 favorite fruits, `+ favoriteFruit + `, ` + secondFavoriteFruit + `, and ` + thirdFavoriteFruit + `<br>
-        they are now buy `+ fruitQuantity + ` get 1 double price!!</p>`;
+        output.innerHTML = `<br>Sal's New York Style Strawberries <br><img src="` + profileLink + `" style='border-radius:60px'><br>
+        <p>Dear ` + displayName + ` @` + email + `<br>
+        We have an offer on your 3 favorite fruits, </p>`; 
+        output.innerText +=  favoriteFruit + `, ` + secondFavoriteFruit + `, and ` + thirdFavoriteFruit + `. They are now buy `+ fruitQuantity + ` get 1 double price!!`;
     } else {
         alert("PLease log in with your google account to continue")
     }
 }
 
 async function fb_readReviews() {
-    document.getElementById('output').innerHTML = '';
+    output.innerHTML = '';
     let snapshot = await firebase.database().ref('/salsStrawberry/review').once('value')
     let reviews = snapshot.val()
     let reviewKeys = Object.keys(reviews)
     for (i = 0; i < reviewKeys.length; i++) {
         let key = reviewKeys[i];
         console.log(reviews[key])
-        document.getElementById('output').innerHTML = document.getElementById('output').innerHTML + `<br><p>` + reviews[key].review + `</p>`
+        output.innerHTML += output.innerHTML + `<br>`;
+        output.innerText += reviews[key].review;
     }
 }
 
 async function fb_readPopularFruit() {
-    document.getElementById('output').innerHTML = '';
+    output.innerHTML = '';
     let snapshot = await firebase.database().ref('/salsStrawberry/users').once('value')
     let popularFruits = []
     let users = snapshot.val();
@@ -210,7 +212,7 @@ async function fb_readPopularFruit() {
     popularFruits.sort((a, b) => b.value - a.value)
     console.log(popularFruits)
     for (i = 0; i < popularFruits.length; i++) {
-        document.getElementById('output').innerHTML = document.getElementById('output').innerHTML + `<p>` + popularFruits[i].fruit + `: ` + popularFruits[i].frequency + `</p><br>`;
+        output.innerText = output.innerHTML + popularFruits[i].fruit + `: ` + popularFruits[i].frequency;
     }
 }
 
