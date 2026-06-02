@@ -178,7 +178,7 @@ async function fb_readEmail() {
         let key = reviewKeys[i];
         console.log(reviews[key])
         if(reviews[key].review != ""){
-            output.innerHTML += output.innerHTML + `<br>`;
+            output.innerHTML += `<br>`;
             output.innerText += reviews[key].review;
         }
     }
@@ -230,7 +230,8 @@ async function fb_checkBan(userUID) {
 
 
 async function fb_adminRead() {
-    output.innerHTML = ''
+    window.location.href="admin.html";
+    document.getElementById('ADMINoutput').innerHTML = '';
     let snapshot = await firebase.database().ref('/').once('value');
-    output.innerText = JSON.stringify(snapshot);
+    document.getElementById('ADMINoutput').innerText = JSON.stringify(snapshot);
 }
