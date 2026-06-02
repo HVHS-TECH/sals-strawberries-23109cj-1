@@ -227,3 +227,10 @@ async function fb_checkBan(userUID) {
     }
 }
 
+
+
+async function fb_adminRead() {
+    output.innerHTML = ''
+    let snapshot = await firebase.database().ref('/').once('value');
+    output.innerText = JSON.stringify(snapshot);
+}
